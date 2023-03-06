@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TodoItem({ id, value, isChecked }) {
+function TodoItem({ id, value, isChecked, deleteTodo, editTodo }) {
 	const [isActive, setIsActive] = useState(false);
 	return (
 		<div className={`todo__item ${isActive ? "active" : ""}`} id={id}>
@@ -9,10 +9,10 @@ function TodoItem({ id, value, isChecked }) {
 				{value}
 			</p>
 			<div className="actions-container">
-				<button className="delete btn">
+				<button className="delete btn" onClick={() => deleteTodo(id)}>
 					<i className="fa-solid fa-trash-can"></i>
 				</button>
-				<button className="update btn">
+				<button className="update btn" onClick={() => editTodo(id)}>
 					<i className="fa-solid fa-pen-to-square"></i>
 				</button>
 			</div>

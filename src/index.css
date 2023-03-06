@@ -163,21 +163,22 @@ body {
 
 .todo__list {
 	margin-block-start: 15px;
-	padding: 30px;
+	padding: 25px;
 	border-radius: var(--rounded);
 	background-color: var(--lite-gray);
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	gap: 20px;
 }
 
 .todo__item {
-	width: 100%;
 	padding-block: 10px;
 	padding-inline: 35px 15px;
 	border-radius: var(--rounded);
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
+	flex-direction: column;
 	background-color: var(--item-bg);
 	gap: 10px;
 	font-weight: 500;
@@ -185,12 +186,12 @@ body {
 }
 .todo__item .check {
 	position: absolute;
-	top: 15px;
+	top: 18px;
 	left: 12px;
 }
 
 .task-content {
-	width: 385px;
+	max-width: 100%;
 	height: 32px;
 	padding: 2px 5px;
 	border-radius: 5px;
@@ -217,6 +218,7 @@ body {
 	display: flex;
 	gap: 10px;
 	align-items: center;
+	order: -1;
 }
 
 .overlay {
@@ -265,4 +267,14 @@ body {
 	border: 1px solid var(--item-bg);
 	border-radius: var(--rounded);
 	color: var(--primary-dark-color);
+}
+
+@media (min-width: 640px) {
+	.todo__item {
+		flex-direction: row;
+	}
+
+	.actions-container {
+		order: 1;
+	}
 }
