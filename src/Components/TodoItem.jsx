@@ -1,10 +1,19 @@
 import { useState } from "react";
 
-function TodoItem({ id, value, isChecked, deleteTodo, editTodo }) {
+function TodoItem(props) {
+	const { id, value, isChecked, handleCheckClick, deleteTodo, editTodo, date } =
+		props;
 	const [isActive, setIsActive] = useState(false);
 	return (
-		<div className={`todo__item ${isActive ? "active" : ""}`} id={id}>
-			<i className="check fa-regular fa-square"></i>
+		<li
+			className={`todo__item ${isActive ? "active" : ""} ${
+				isChecked ? "checked" : ""
+			}`}
+			id={id}
+		>
+			<button className="check" onClick={() => handleCheckClick(id)}>
+				<i className={`fa-solid fa-square${isChecked ? "-check" : ""}`}></i>
+			</button>
 			<p className="task-content" onClick={() => setIsActive(!isActive)}>
 				{value}
 			</p>
@@ -16,7 +25,8 @@ function TodoItem({ id, value, isChecked, deleteTodo, editTodo }) {
 					<i className="fa-solid fa-pen-to-square"></i>
 				</button>
 			</div>
-		</div>
+			<span className="date">{date}</span>
+		</li>
 	);
 }
 

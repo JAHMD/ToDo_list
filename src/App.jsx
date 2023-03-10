@@ -4,22 +4,30 @@ import AddTask from "./Components/AddTask";
 import TodoHeader from "./Components/TodoHeader";
 import TodoList from "./Components/TodoList";
 
+/**TODO:
+ * add "is completed" feature.
+ * work on the dropdown menu.
+ * add date/time to each todo.
+ * add some smoothness to the app.
+ * ...
+ */
+const DEFAULT_TODO = {
+	id: "",
+	value: "",
+	isChecked: false,
+	date: "",
+};
+
 function App() {
 	const [isAddTask, setIsAddTask] = useState(false);
-	const [todo, setTodo] = useState({
-		id: "",
-		value: "",
-		isChecked: false,
+	const [todo, setTodo] = useState(DEFAULT_TODO);
+	const [todoList, setTodoList] = useState(() => {
+		return JSON.parse(localStorage.getItem("todo-list")) || [];
 	});
-	const storedList = JSON.parse(localStorage.getItem("todo-list"));
-	const [todoList, setTodoList] = useState(storedList || []);
+	const [selected, setSelected] = useState("All");
 
 	function handleIsAddTask() {
-		setTodo({
-			id: "",
-			value: "",
-			isChecked: false,
-		});
+		setTodo(DEFAULT_TODO);
 		setIsAddTask((oldState) => !oldState);
 	}
 
@@ -31,23 +39,35 @@ function App() {
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (!todo.value) return;
-		const storedList = JSON.parse(localStorage.getItem("todo-list"));
+
+		let updatedList = [];
+		const storedList = JSON.parse(localStorage.getItem("todo-list")) || [];
+		const date = new Date().toLocaleString();
 		const existedTodo = storedList.find(
 			(storedTodo) => storedTodo.id === todo.id
 		);
-		let updatedList = [];
 
 		if (!existedTodo) {
-			updatedList = [...todoList, todo];
+			updatedList = [{ ...todo, date }, ...storedList];
 		} else {
-			updatedList = storedList.map((storedTodo) => {
-				return storedTodo.id === existedTodo.id ? todo : storedTodo;
-			});
+			updatedList = [
+				{ ...todo, date },
+				...storedList.filter((storedTodo) => storedTodo.id !== existedTodo.id),
+			];
 		}
 		localStorage.setItem("todo-list", JSON.stringify(updatedList));
 		setTodoList(updatedList);
-		setTodo({ id: 0, value: "", isChecked: false });
+		setTodo(DEFAULT_TODO);
 		setIsAddTask((oldState) => !oldState);
+		setSelected("All");
+	}
+
+	function handleCheckClick(id) {
+		const updatedList = todoList.map((todo) =>
+			todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo
+		);
+		localStorage.setItem("todo-list", JSON.stringify(updatedList));
+		setTodoList(updatedList);
 	}
 
 	function editTodo(id) {
@@ -61,6 +81,20 @@ function App() {
 		const updatedList = todoList.filter((todo) => todo.id !== id);
 		setTodoList(updatedList);
 		localStorage.setItem("todo-list", JSON.stringify(updatedList));
+	}
+
+	function handleSelected(value) {
+		const storedList = JSON.parse(localStorage.getItem("todo-list"));
+		setSelected(value);
+		let updatedList;
+		if (value === "Completed") {
+			updatedList = storedList.filter((todo) => todo.isChecked);
+		} else if (value === "Uncompleted") {
+			updatedList = storedList.filter((todo) => !todo.isChecked);
+		} else {
+			updatedList = [...storedList];
+		}
+		setTodoList(updatedList);
 	}
 
 	return (
@@ -77,9 +111,14 @@ function App() {
 				<h1 className="heading">ToDo List</h1>
 			</section>
 			<section className="todo">
-				<TodoHeader isAddTask={handleIsAddTask} />
+				<TodoHeader
+					isAddTask={handleIsAddTask}
+					handleSelected={handleSelected}
+					selected={selected}
+				/>
 				<TodoList
 					todoList={todoList}
+					handleCheckClick={handleCheckClick}
 					deleteTodo={deleteTodo}
 					editTodo={editTodo}
 				/>

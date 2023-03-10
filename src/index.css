@@ -3,7 +3,8 @@
 	--btn-hover-color: #cecece;
 	--add-btn-color: #797979;
 	--add-btn-hover-color: #585858;
-	--primary-dark-color: #242424;
+	--dark-black: #242424;
+	--lite-black: #24242486;
 	--item-bg: #dfdfdf;
 	--border-color: #787878;
 
@@ -67,8 +68,8 @@ html {
 }
 
 body {
-	color: var(--primary-dark-color);
-	background-color: var(--primary-dark-color);
+	color: var(--dark-black);
+	background-color: var(--dark-black);
 	font-size: 1.6rem;
 }
 
@@ -109,55 +110,76 @@ body {
 
 .add-task,
 .submit,
-.drop-down {
+.dropdown__btn {
 	padding: 0.8rem 1.5rem;
 	background-color: var(--add-btn-color);
 	color: var(--lite-gray);
 }
 
-:is(.add-task, .submit, .drop-down):hover {
+:is(.add-task, .submit, .dropdown__btn):hover {
 	background-color: var(--add-btn-hover-color);
 }
 
-.drop-down {
-	max-width: 100%;
+.dropdown {
 	min-width: 100px;
 	position: relative;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+}
+
+.dropdown__btn {
+	width: 100%;
+	border: 1px solid transparent;
+}
+.dropdown__btn:is(:focus, :focus-visible) {
+	outline: transparent;
 }
 
 .menu {
 	height: 0;
-	width: 100%;
+	width: fit-content;
 	padding-inline: 1rem;
-	border-radius: inherit;
+	border-radius: var(--rounded);
+	display: grid;
+	gap: 10px;
 	position: absolute;
 	top: calc(100% + 10px);
-	left: 0;
+	left: 50%;
+	transform: translateX(-50%);
 	text-align: center;
 	background-color: var(--add-btn-color);
-	display: grid;
-	align-items: flex-start;
-	gap: 10px;
-	transition: 300ms height;
-	overflow: auto;
+	color: white;
+	transition: 300ms;
+	overflow: hidden;
+	z-index: 5;
 }
 .menu.active {
-	height: fit-content;
+	height: 172px;
 }
 
-.cat {
-	padding: 0.5rem;
+.dropdown__item {
+	padding: 1rem;
 	border-radius: var(--rounded);
-	background-color: var(--item-bg);
-	color: var(--primary-dark-color);
+	transition: 300ms color, 300ms background-color;
+	position: relative;
+	cursor: pointer;
 }
-.cat:first-of-type {
+.dropdown__item:hover {
+	background-color: var(--item-bg);
+	color: var(--dark-black);
+}
+.dropdown__item:not(:last-of-type)::after {
+	content: "";
+	width: 80%;
+	height: 1px;
+	position: absolute;
+	bottom: -6px;
+	left: 50%;
+	background-color: var(--lite-gray);
+	transform: translateX(-50%);
+}
+.dropdown__item:first-of-type {
 	margin-top: 10px;
 }
-.cat:last-of-type {
+.dropdown__item:last-of-type {
 	margin-bottom: 10px;
 }
 
@@ -172,7 +194,8 @@ body {
 }
 
 .todo__item {
-	padding-block: 10px;
+	padding-top: 12px;
+	padding-bottom: 20px;
 	padding-inline: 35px 15px;
 	border-radius: var(--rounded);
 	display: flex;
@@ -184,14 +207,26 @@ body {
 	font-weight: 500;
 	position: relative;
 }
+.todo__item.checked .task-content {
+	text-decoration: line-through;
+	color: var(--lite-black);
+}
+
 .todo__item .check {
+	display: flex;
+	border: none;
 	position: absolute;
 	top: 18px;
 	left: 12px;
+	background: transparent;
+	color: var(--dark-black);
+	font-size: 2rem;
+	outline: transparent;
 }
 
 .task-content {
 	max-width: 100%;
+	flex: 1;
 	height: 32px;
 	padding: 2px 5px;
 	border-radius: 5px;
@@ -199,6 +234,7 @@ body {
 	overflow: hidden;
 	cursor: pointer;
 	line-height: 1.6;
+	letter-spacing: 100%;
 	transition: 300ms background-color;
 }
 .task-content:hover {
@@ -219,6 +255,14 @@ body {
 	gap: 10px;
 	align-items: center;
 	order: -1;
+}
+
+.date {
+	position: absolute;
+	bottom: 5px;
+	left: 40px;
+	font-size: 1.3rem;
+	color: var(--lite-black);
 }
 
 .overlay {
@@ -242,7 +286,7 @@ body {
 	display: flex;
 	font-size: 2.5rem;
 	color: var(--lite-gray);
-	background-color: var(--primary-dark-color);
+	background-color: var(--dark-black);
 	transition: 300ms color;
 }
 .close:hover {
@@ -261,12 +305,23 @@ body {
 	box-shadow: 5px 5px 8px #24242424, -5px -5px 8px #24242424;
 }
 
+.task-title {
+	font-weight: 500;
+}
+
 .task-input {
 	margin-block: 10px;
 	padding: 1rem 1.5rem;
 	border: 1px solid var(--item-bg);
 	border-radius: var(--rounded);
-	color: var(--primary-dark-color);
+	color: var(--dark-black);
+}
+
+.no-todo {
+	padding: 1rem;
+	border-radius: var(--rounded);
+	text-align: center;
+	background-color: var(--item-bg);
 }
 
 @media (min-width: 640px) {
