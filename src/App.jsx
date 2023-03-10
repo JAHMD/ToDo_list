@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import AddTask from "./Components/AddTask";
+import Dropdown from "./Components/Dropdown";
 import TodoHeader from "./Components/TodoHeader";
 import TodoList from "./Components/TodoList";
 
@@ -111,11 +112,9 @@ function App() {
 				<h1 className="heading">ToDo List</h1>
 			</section>
 			<section className="todo">
-				<TodoHeader
-					isAddTask={handleIsAddTask}
-					handleSelected={handleSelected}
-					selected={selected}
-				/>
+				<TodoHeader isAddTask={handleIsAddTask}>
+					<Dropdown handleSelected={handleSelected} selected={selected} />
+				</TodoHeader>
 				<TodoList
 					todoList={todoList}
 					handleCheckClick={handleCheckClick}

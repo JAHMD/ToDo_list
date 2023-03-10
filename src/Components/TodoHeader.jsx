@@ -1,12 +1,10 @@
-import Dropdown from "./Dropdown";
-
-function TodoHeader({ isAddTask, handleSelected, selected }) {
+function TodoHeader({ isAddTask, children }) {
 	return (
 		<div className="todo__header">
 			<button className="add-task btn" onClick={isAddTask}>
 				Add task
 			</button>
-			<Dropdown handleSelected={handleSelected} selected={selected} />
+			{children}
 		</div>
 	);
 }
