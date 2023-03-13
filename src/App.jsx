@@ -5,13 +5,6 @@ import Dropdown from "./Components/DropDown";
 import TodoHeader from "./Components/TodoHeader";
 import TodoList from "./Components/TodoList";
 
-/**TODO:
- * add "is completed" feature.
- * work on the dropdown menu.
- * add date/time to each todo.
- * add some smoothness to the app.
- * ...
- */
 const DEFAULT_TODO = {
 	id: "",
 	value: "",
@@ -64,16 +57,17 @@ function App() {
 	}
 
 	function handleCheckClick(id) {
-		const updatedList = todoList.map((todo) =>
+		const storedList = JSON.parse(localStorage.getItem("todo-list"));
+		const updatedList = storedList.map((todo) =>
 			todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo
 		);
 		localStorage.setItem("todo-list", JSON.stringify(updatedList));
-		setTodoList(updatedList);
+		handleSelected(selected);
 	}
 
 	function editTodo(id) {
 		const todo = todoList.find((todo) => todo.id === id);
-
+		todo.isChecked = false;
 		setTodo((oldTodo) => ({ ...oldTodo, ...todo }));
 		setIsAddTask((oldState) => !oldState);
 	}
@@ -86,6 +80,7 @@ function App() {
 
 	function handleSelected(value) {
 		const storedList = JSON.parse(localStorage.getItem("todo-list"));
+		console.log(value, storedList);
 		setSelected(value);
 		let updatedList;
 		if (value === "Completed") {

@@ -195,7 +195,7 @@ body {
 
 .todo__item {
 	padding-top: 12px;
-	padding-bottom: 20px;
+	padding-bottom: 12px;
 	padding-inline: 35px 15px;
 	border-radius: var(--rounded);
 	display: flex;
@@ -226,7 +226,6 @@ body {
 
 .task-content {
 	max-width: 100%;
-	flex: 1;
 	height: 32px;
 	padding: 2px 5px;
 	border-radius: 5px;
@@ -234,7 +233,6 @@ body {
 	overflow: hidden;
 	cursor: pointer;
 	line-height: 1.6;
-	letter-spacing: 100%;
 	transition: 300ms background-color;
 }
 .task-content:hover {
@@ -254,14 +252,13 @@ body {
 	display: flex;
 	gap: 10px;
 	align-items: center;
-	order: -1;
 }
 
 .date {
 	position: absolute;
-	bottom: 5px;
+	bottom: 19px;
 	left: 40px;
-	font-size: 1.3rem;
+	font-size: 1.15rem;
 	color: var(--lite-black);
 }
 
@@ -327,9 +324,11 @@ body {
 @media (min-width: 640px) {
 	.todo__item {
 		flex-direction: row;
+		padding-bottom: 22px;
 	}
 
-	.actions-container {
-		order: 1;
+	.date {
+		bottom: 5px;
+		font-size: 1.3rem;
 	}
 }
